@@ -5,7 +5,7 @@
 import pandas as pd
 
 # load_set generates a subset and returns it
-# file = csv file with data
+# file = csv file to load from
 # n = amount of samples. n=0 for all
 # split = sampling method. 'nth' for every nth element 'rand' for random
 def load_set(file,n=0,split='rand'):
@@ -18,9 +18,10 @@ def load_set(file,n=0,split='rand'):
     return df.sample(n=n)
 
 # make_csv generates a subset and saves it as a csv file
-# name = name of the csv file ('example.csv')
+# file = csv file to load from
+# name = name of the csv file to save ('example.csv')
 # n = amount of samples. n=0 for all
 # split = sampling method. 'nth' for every nth element 'rand' for random
-def make_csv(name,n=0,split='rand'):
-    subset = load_set(n=0,split='rand')
+def make_csv(file,name,n=0,split='rand'):
+    subset = load_set(file,n,split=split)
     subset.to_csv(name, index=False)

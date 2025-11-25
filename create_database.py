@@ -5,10 +5,10 @@ import sqlite3
 import pandas as pd
 import hashlib
 
-def createdb(file):
+def createdb(file,name):
 
     # Create db and table
-    con = sqlite3.connect("speeches.db")
+    con = sqlite3.connect(name)
     cur = con.cursor()
     cur.execute("""
     CREATE TABLE speeches (
