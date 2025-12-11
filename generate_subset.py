@@ -3,6 +3,7 @@
 # use make_csv to save the subset as a csv file
 
 import pandas as pd
+import os.path as path
 
 # load_set generates a subset and returns it
 # file = csv file to load from
@@ -23,5 +24,7 @@ def load_set(file,n=0,split='rand'):
 # n = amount of samples. n=0 for all
 # split = sampling method. 'nth' for every nth element 'rand' for random
 def make_csv(file,name,n=0,split='rand'):
+    if path.isfile(name):
+        return
     subset = load_set(file,n,split=split)
     subset.to_csv(name, index=False)

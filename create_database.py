@@ -3,58 +3,56 @@
 
 import sqlite3
 import pandas as pd
-import hashlib
+import os.path as path
 
+# createdb to make an sqlite db
+# file = csv file to make the db from "example.csv"
+# name = name of saved .db file "exmple.db"
 def createdb(file,name):
+    
+    if path.isfile(name):
+        return
 
-    # Create db and table
+    # create db and table
     con = sqlite3.connect(name)
     cur = con.cursor()
     cur.execute("""
     CREATE TABLE speeches (
-        id TEXT PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         member_name TEXT,
-        sitting_date TEXT,
-        parliamentary_period TEXT,
-        parliamentary_session TEXT,
-        parliamentary_sitting TEXT,
+        sitting_date DATE,
         political_party TEXT,
         government TEXT,
         member_region TEXT,
         roles TEXT,
-        member_gender TEXT,
         speech TEXT
     );
     """)
 
-    # Helping function for uniqe id generation
-    def make_id(row):
-        base = f"{row['sitting_date']}_{row['member_name']}"
-        text_hash = hashlib.md5(row["speech"][:200].encode("utf-8")).hexdigest()[:8]
-        return f"{base}_{text_hash}"
-
-    # Load file in chunks
+    # load file in chunks
     chunks = pd.read_csv(file, chunksize=10000)
 
-    # Interate chunks
     for chunk_number, chunk in enumerate(chunks):
         # print(f"Chunk {chunk_number} data {chunk_number*10000} - {(chunk_number + 1)*10000}")
 
-        # Genarate id for each entry
-        chunk["id"] = chunk.apply(make_id, axis=1)
+        # change date to yyyy-mm-dd format for filtering
+        chunk["sitting_date"] = pd.to_datetime(
+        chunk["sitting_date"],
+        format="%d/%m/%Y",
+        errors="coerce").dt.strftime("%Y-%m-%d")
 
-        rows = chunk[['id', 'member_name', 'sitting_date', 'parliamentary_period',
-        'parliamentary_session', 'parliamentary_sitting', 'political_party',
-        'government', 'member_region', 'roles', 'member_gender', 'speech']].values.tolist()
+        rows = chunk[['member_name', 'sitting_date', 'political_party',
+        'government', 'member_region', 'roles', 'speech']].values.tolist()
 
-        # Insert data to db
+        # insert data to db
         cur.executemany("""
             INSERT OR IGNORE INTO speeches
-            (id, member_name, sitting_date, parliamentary_period, parliamentary_session, parliamentary_sitting, political_party, government, member_region, roles, member_gender, speech)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (member_name, sitting_date, political_party, government, member_region, roles, speech)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """, rows)
 
         con.commit()
 
     con.close()
 
+createdb('subset2000.csv','sub2000.db')
