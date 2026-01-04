@@ -5,7 +5,7 @@ import quarry_database as qd
 import create_database
 import generate_subset
 
-db_name = 'sub2000.db'
+db_name = 'subset2000.db'
 csv_name= 'subset2000.csv'
 
 generate_subset.make_csv('Greek_Parliament_Proceedings_1989_2020.csv',csv_name,n=2000)

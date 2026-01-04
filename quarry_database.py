@@ -32,6 +32,7 @@ class quarry_db():
     
     # get all from an array of ids
     def get_by_idarray(self, ids):
+        ids = [int(x+1) for x in ids]
         placeholders = ",".join(["?"] * len(ids))
     
         order_clause = "CASE id " + " ".join(f"WHEN ? THEN {i}" for i, _ in enumerate(ids)) + " END"
