@@ -5,6 +5,7 @@ import quarry_database as qd
 import create_database
 import generate_subset
 from keywords import top_words
+import lsi
 
 db_name = 'subset2000.db'
 csv_name= 'subset2000.csv'
@@ -13,6 +14,7 @@ generate_subset.make_csv('Greek_Parliament_Proceedings_1989_2020.csv',csv_name,n
 
 create_database.createdb(csv_name, db_name)
 s = tfidf.tfidf(db_name)
+lsi_module = lsi.lsi(s)
 
 def get_db():
     if "db" not in g:
@@ -65,9 +67,15 @@ def keywords():
     db = get_db()
     results = db.get_by_idarray(db.get_ids_by_filters(filters=filters))
     keywords = top_words(s,filters)
-    print(keywords[0])
     return render_template('keywords.html', results=results, keywords=keywords)
 
+
+@app.route('/pairs')
+def pairs():
+    k = int(request.args.get('pairs_k', ''))
+
+    results = lsi_module.topk_pairs(k)
+    return render_template('pairs.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=False)
