@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ir-greek-parliment</title>
+    <link rel="stylesheet" href="static/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <a href="/"><h1 class="text-center mt-3 ">Greek Parliment Speaches Search</h1></a>
+    </div>
+
+    <div class="container my-4">
+        <h4 class="mb-3">Top-k ζεύγη βουλευτών</h4>
+
+        <ul class="list-group">
+            {% for name1, name2, value in results %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="/keywords?member={{ name1|urlencode }}"><strong>{{ name1 }}</strong></a>
+                    <span class="mx-2">-</span>
+                    <a href="/keywords?member={{ name2|urlencode }}"><strong>{{ name2 }}</strong></a>
+                </div>
+
+                <span class="badge bg-primary rounded-pill">
+                    {{ "%.3f"|format(value) }}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+</body>

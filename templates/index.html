@@ -8,7 +8,7 @@
 
 <body>
     <div class="container">
-        <h1 class="text-center mt-3">Greek Parliment Speaches Search</h1>
+        <a href="/"><h1 class="text-center mt-3">Greek Parliment Speaches Search</h1></a>
 
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -16,12 +16,12 @@
                     κειμένου</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" role="tab"
+                <a class="nav-link" data-bs-toggle="tab" href="#keywords" aria-selected="false" role="tab"
                     tabindex="-1">Αναζήτηση keywords</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" data-bs-toggle="tab" href="#komma" aria-selected="false" role="tab"
-                    tabindex="-2">Ανα κόμμα</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#pairs" aria-selected="false" role="tab"
+                    tabindex="-2">Ομοιότητες</a>
             </li>
         </ul>
         <div id="myTabContent" class="tab-content">
@@ -53,15 +53,15 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel">
+            <div class="tab-pane fade" id="keywords" role="tabpanel">
                 <form action="/keywords" method="GET" class="mt-5">
 
                     <div class="text-center mb-3 mt-3">
                         Αναζήτηση ανα βουλευτή
                         <div class="input-group w-50 mx-auto m-4">
-                            <input id="b" type="text" name="member" placeholder="Όνομα βουλευτή" value="{{ query or '' }}"
-                                class="form-control form-control-lg rounded-pill ps-4" list="namelist"
-                                style="border-right: none;">
+                            <input id="b" type="text" name="member" placeholder="Όνομα βουλευτή"
+                                value="{{ query or '' }}" class="form-control form-control-lg rounded-pill ps-4"
+                                list="namelist" style="border-right: none;">
                             <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
                                 style="margin-left: -50px; z-index: 10;">
                                 Search
@@ -74,9 +74,9 @@
                     <div class="text-center mb-3">
                         Αναζήτηση ανα κόμμα
                         <div class="input-group w-50 mx-auto m-4">
-                            <input id="k" type="text" name="party" placeholder="Όνομα κόμματος" value="{{ query or '' }}"
-                                class="form-control form-control-lg rounded-pill ps-4" list="partylist"
-                                style="border-right: none;">
+                            <input id="k" type="text" name="party" placeholder="Όνομα κόμματος"
+                                value="{{ query or '' }}" class="form-control form-control-lg rounded-pill ps-4"
+                                list="partylist" style="border-right: none;">
                             <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
                                 style="margin-left: -50px; z-index: 10;">
                                 Search
@@ -86,20 +86,20 @@
                 </form>
 
             </div>
-            <div class="tab-pane fade" id="komma" role="tabpanel">
+            <div class="tab-pane fade" id="pairs" role="tabpanel">
+                <form action="/pairs" method="GET" class="mt-5">
 
-                <div class="text-center mb-3">
-                    <div class="input-group w-50 mx-auto m-4">
-                        <input id="k" type="text" name="k" placeholder="Όνομα κόμματος" value="{{ query or '' }}"
-                            class="form-control form-control-lg rounded-pill ps-4" list="partylist"
-                            style="border-right: none;">
-                        <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
-                            style="margin-left: -50px; z-index: 10;">
-                            Search
-                        </button>
+                    <div class="text-center mb-3">
+                        <div class="input-group w-50 mx-auto m-4">
+                            <input id="k" type="number" name="pairs_k" placeholder="Αριθμός top-k ζεύγη"
+                                value="{{ query or '' }}" class="form-control form-control-lg rounded-pill ps-4" style="border-right: none;">
+                            <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
+                                style="margin-left: -50px; z-index: 10;">
+                                Search
+                            </button>
+                        </div>
                     </div>
-                </div>
-
+                </form>
             </div>
         </div>
 
