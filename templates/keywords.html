@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ir-greek-parliment</title>
+    <link rel="stylesheet" href="static/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mt-3">Greek Parliment Speaches Search</h1>
+    </div>
+    <div class="container">
+        <div class="results">
+            {% if results is not none %}
+
+            {% for item in results %}
+            <div class="card shadow-sm my-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="card-title mb-0">
+                            {{ item[1] }}
+                        </h3>
+                        <small class="text-muted">
+                            {{ item[2] }}
+                        </small>
+                    </div>
+
+                    <span class="badge bg-secondary mb-3">
+                        {{ item[3] }}
+                    </span>
+
+                    <p class="card-text mt-3">
+                        {{ item[7] }}
+                    </p>
+
+                    <div class="mt-3">
+                        <small class="text-muted d-block mb-1"> Keywords:
+                            <span class="badge bg-light text-dark border me-1 mb-1">
+                                Λέξη
+                                <span class="text-muted">(score) </span>
+                            </span>
+                        </small>
+                        {% for word, value in keywords[loop.index0] %}
+                        <span class="badge bg-light text-dark border me-1 mb-1">
+                            {{ word }}
+                            <span class="text-muted">({{ "%.3f"|format(value) }})</span>
+                        </span>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+            {% else %}
+            <p class="no-results">No results found{% if query %} for "{{ query }}"{% endif %}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>

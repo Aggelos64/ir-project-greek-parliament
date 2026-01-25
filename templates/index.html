@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Results Display</title>
+    <title>ir-greek-parliment</title>
     <link rel="stylesheet" href="static/bootstrap.min.css">
 </head>
 
@@ -17,7 +17,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" role="tab"
-                    tabindex="-1">Ανα βουλευτή</a>
+                    tabindex="-1">Αναζήτηση keywords</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" data-bs-toggle="tab" href="#komma" aria-selected="false" role="tab"
@@ -54,17 +54,36 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel">
+                <form action="/keywords" method="GET" class="mt-5">
 
-                <div class="text-center mb-3">
-                    <div class="input-group w-50 mx-auto m-4">
-                        <input id="b" type="text" name="b" placeholder="Όνομα βουλευτή" value="{{ query or '' }}"
-                            class="form-control form-control-lg rounded-pill ps-4" list="namelist" style="border-right: none;">
-                        <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
-                            style="margin-left: -50px; z-index: 10;">
-                            Search
-                        </button>
+                    <div class="text-center mb-3 mt-3">
+                        Αναζήτηση ανα βουλευτή
+                        <div class="input-group w-50 mx-auto m-4">
+                            <input id="b" type="text" name="member" placeholder="Όνομα βουλευτή" value="{{ query or '' }}"
+                                class="form-control form-control-lg rounded-pill ps-4" list="namelist"
+                                style="border-right: none;">
+                            <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
+                                style="margin-left: -50px; z-index: 10;">
+                                Search
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
+                <form action="/keywords" method="GET" class="mt-5">
+
+                    <div class="text-center mb-3">
+                        Αναζήτηση ανα κόμμα
+                        <div class="input-group w-50 mx-auto m-4">
+                            <input id="k" type="text" name="party" placeholder="Όνομα κόμματος" value="{{ query or '' }}"
+                                class="form-control form-control-lg rounded-pill ps-4" list="partylist"
+                                style="border-right: none;">
+                            <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
+                                style="margin-left: -50px; z-index: 10;">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
             </div>
             <div class="tab-pane fade" id="komma" role="tabpanel">
@@ -72,7 +91,8 @@
                 <div class="text-center mb-3">
                     <div class="input-group w-50 mx-auto m-4">
                         <input id="k" type="text" name="k" placeholder="Όνομα κόμματος" value="{{ query or '' }}"
-                            class="form-control form-control-lg rounded-pill ps-4" list="partylist" style="border-right: none;">
+                            class="form-control form-control-lg rounded-pill ps-4" list="partylist"
+                            style="border-right: none;">
                         <button class="btn btn-primary btn-lg rounded-pill px-4" type="submit"
                             style="margin-left: -50px; z-index: 10;">
                             Search
@@ -101,15 +121,31 @@
 
     </div>
     <div class="container">
-        <!-- Results Display -->
         <div class="results">
             {% if results is not none %}
 
             {% for item in results %}
-            <div class="result-item">
-                <h3>{{ item[1] }} {{ item[2] }} {{ item[3] }}</h3>
-                <p>{{ item[7] }}</p>
+            <div class="card shadow-sm my-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="card-title mb-0">
+                            {{ item[1] }}
+                        </h3>
+                        <small class="text-muted">
+                            {{ item[2] }}
+                        </small>
+                    </div>
+
+                    <span class="badge bg-secondary mb-3">
+                        {{ item[3] }}
+                    </span>
+
+                    <p class="card-text mt-3">
+                        {{ item[7] }}
+                    </p>
+                </div>
             </div>
+
             {% endfor %}
 
             {% else %}

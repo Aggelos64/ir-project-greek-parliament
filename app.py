@@ -1,9 +1,10 @@
-from flask import g,Flask, render_template, request
+from flask import g,Flask, render_template, request, redirect
 import webbrowser
 import tfidf
 import quarry_database as qd
 import create_database
 import generate_subset
+from keywords import top_words
 
 db_name = 'subset2000.db'
 csv_name= 'subset2000.csv'
@@ -20,7 +21,7 @@ def get_db():
 
 app = Flask(__name__)
 
-webbrowser.open("http://localhost:5000/")
+# webbrowser.open("http://localhost:5000/")
 
 
 @app.route('/')
@@ -46,6 +47,26 @@ def index():
     names = db.get_all_names()
     partys = db.get_all_partys()
     return render_template('index.html', results=results,names=names,partys=partys)
+
+
+@app.route('/keywords')
+def keywords():
+    member = request.args.get('member', '')
+    party = request.args.get('party', '')
+
+    filters = None
+    if member != '':
+        filters = {'member_name':member}
+    if party != '':
+        filters = {'political_party':party}
+    if not filters:
+        return redirect('/')
+    
+    db = get_db()
+    results = db.get_by_idarray(db.get_ids_by_filters(filters=filters))
+    keywords = top_words(s,filters)
+    print(keywords[0])
+    return render_template('keywords.html', results=results, keywords=keywords)
 
 
 if __name__ == '__main__':

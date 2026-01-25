@@ -25,3 +25,20 @@ def text_process(text):
     # stem each word
     text = ud.normalize('NFD', text).upper().translate(d)
     return " ".join(cached_stem(t) for t in text.split())
+
+def map_stems(df):
+    stem_to_word = {}
+
+    for text in df:
+        text = re.sub(r'[\d]+', ' ', text)
+        text = re.sub(r'[^\w\s]', ' ', text)
+        text = re.sub(r'\b\w{1,3}\b', ' ', text)
+        text = re.sub(r'\s+', ' ', text)
+
+        text = ud.normalize('NFD', text).upper().translate(d)
+
+        for token in text.split():
+            stem = cached_stem(token)
+            if stem not in stem_to_word:
+                stem_to_word[stem] = token
+    return stem_to_word
