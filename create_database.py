@@ -54,5 +54,3 @@ def createdb(file,name):
         con.commit()
 
     con.close()
-
-createdb('subset2000.csv','sub2000.db')

@@ -8,7 +8,9 @@
 
 <body>
     <div class="container">
-        <a href="/"><h1 class="text-center mt-3">Greek Parliment Speaches Search</h1></a>
+        <a href="/">
+            <h1 class="text-center mt-3">Greek Parliment Speaches Search</h1>
+        </a>
     </div>
     <div class="container">
         <div class="results">
@@ -53,6 +55,35 @@
             </div>
 
             {% endfor %}
+
+            <nav>
+                <ul class="pagination justify-content-center mt-4">
+
+                    <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                        <a class="page-link" href="?{{ filters|urlencode }}&page={{ page - 1 }}">
+                            &laquo;
+                        </a>
+                    </li>
+
+                    {% for p in range(page - 2, page + 3) %}
+                    {% if p >= 1 and p <= total_pages %} <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="?{{ filters|urlencode }}&page={{ p }}">
+                            {{ p }}
+                        </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                            <a class="page-link" href="?{{ filters|urlencode }}&page={{ page + 1 }}">
+                                &raquo;
+                            </a>
+                        </li>
+
+                </ul>
+            </nav>
+
+
 
             {% else %}
             <p class="no-results">No results found{% if query %} for "{{ query }}"{% endif %}</p>

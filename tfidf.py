@@ -16,6 +16,7 @@ import math
 class tfidf():
     
     def __init__(self,db='set.db'):
+        self.db_name = db
         self.db = qd.quarry_db(db)
         df = self.db.get_all_speachees()
 
@@ -91,3 +92,14 @@ class tfidf():
 
         qw = qtf.multiply(self.idf)
         return qw
+    
+    # getstate for caching
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["db"] = None
+        return state
+    
+    # setstate for caching
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.db = qd.quarry_db(self.db_name)
