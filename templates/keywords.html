@@ -43,7 +43,7 @@
                                 <span class="text-muted">(score) </span>
                             </span>
                         </small>
-                        {% for word, value in keywords[loop.index0] %}
+                        {% for word, value in keywords[loop.index0 +(page - 1) * 10] %}
                         <span class="badge bg-light text-dark border me-1 mb-1">
                             {{ word }}
                             <span class="text-muted">({{ "%.3f"|format(value) }})</span>
